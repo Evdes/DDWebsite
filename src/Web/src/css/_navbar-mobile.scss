@@ -1,0 +1,21 @@
+.navbar {
+  background-color: black;
+  opacity: 0.8;
+}
+
+.navbar-brand img {
+  width: 5rem;
+}
+
+.navbar-nav {
+  padding-top: 2rem;
+  padding-left: 2rem;
+  li.nav-item {
+    font-size: 2rem;
+    padding: 0rem 1rem;
+    a.nav-link {
+      color: white;
+      border-bottom: 0.1rem solid black;
+    }
+  }
+}
