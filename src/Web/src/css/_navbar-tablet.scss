@@ -1,0 +1,33 @@
+@media (min-width: 1024px) {
+    .navbar-brand img {
+        width: 9rem;
+      }
+
+  .main-nav {
+    li.nav-item{
+        font-size: 1.2rem;
+    }
+    li.nav-item:hover {
+      a.nav-link {
+        border-bottom: 0.1rem solid #e7c840;
+        color: white;
+      }
+    }
+    li + li {
+      border-left: 0.1rem solid #e7c840;
+    }
+  }
+
+  .social-nav {
+    padding-right: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0;
+    li {
+      border-left: 0.1rem solid black;
+    }
+    a.nav-link {
+      border-bottom: 0.1rem solid black;
+    }
+  }
+}
