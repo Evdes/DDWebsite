@@ -1,8 +1,14 @@
 @media (min-width: 1024px) {
-    section {
-      margin-top: 10rem;
-      display: flex;
-      flex-wrap: wrap;
-      padding: 0rem 5rem 0rem 5rem;
+  section {
+    margin: 0rem 2rem 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0rem 2rem 0rem 2rem;
+    height: 100%;
+    header {
+      h1 {
+        font-size: 5rem;
+      }
     }
   }
+}

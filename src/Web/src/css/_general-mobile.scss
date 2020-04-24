@@ -1,7 +1,42 @@
 article {
-  padding-top: 3rem;
+  margin-top: 1.5rem;
 }
 
-section{
-  margin-top: 7rem;
+header {
+  text-align: center;
+  h1 {
+    font-size: 3rem;
+    color: #e7c840;
+  }
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  position: sticky;
+  color: grey;
+  background-color: #333333;
+  p {
+    margin: 0;
+  }
+}
+
+body,
+html{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+section {
+  flex: auto;
+  align-content: flex-start;
+}
+
+@media (min-width: 480px) {
+  section{
+    margin: 0rem auto 0 auto
+  }
 }

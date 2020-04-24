@@ -6,7 +6,9 @@
   width: 30rem;
 }
 
-section#whois article {
-  display: flex;
-  justify-content: center;
+section#whois {
+  article {
+    display: flex;
+    justify-content: center;
+  }
 }
