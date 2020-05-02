@@ -9,12 +9,28 @@ const cssOutputPath = "./dist/css";
 const rename = require("gulp-rename");
 const path = require("path");
 const browserSync = require("browser-sync").create();
+const merge = require("merge-stream");
 
-gulp.task("clean", function () {
-  return del(["dist/*.html", "dist/css/**/*.css", "dist/js/*.js"]);
-});
+function browserSyncInit(done) {
+  browserSync.init({
+    server: {
+      baseDir: "./dist/",
+    },
+    port: 3000,
+  });
+  done();
+}
 
-gulp.task("generateHtml", function () {
+function browserSyncReload(done) {
+  browserSync.reload();
+  done();
+}
+
+function clean() {
+  return del(["dist/*.html", "dist/css", "dist/vendor"]);
+}
+
+function html() {
   return gulp
     .src(["./src/*.html"])
     .pipe(
@@ -24,13 +40,13 @@ gulp.task("generateHtml", function () {
       })
     )
     .pipe(gulp.dest(htmlOutputPath));
-});
+}
 
-sass.compiler = require("node-sass");
+function css() {
+  sass.compiler = require("node-sass");
 
-gulp.task("generateSass", function () {
   return gulp
-    .src("./src/sass/**/*.scss")
+    .src("./src/scss/**/*.scss")
     .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
     .pipe(
       rename(function (file) {
@@ -40,16 +56,39 @@ gulp.task("generateSass", function () {
     )
     .pipe(gulp.dest(cssOutputPath))
     .pipe(browserSync.stream());
-});
+}
 
-gulp.task("watch", function () {
-  browserSync.init({
-    server: {
-      baseDir: "./dist",
-      index: "/index.html",
-    },
-  });
-  gulp.watch("src/sass/**/*.scss", gulp.series("generateSass"));
-  gulp.watch("./*.html").on("change", browserSync.reload);
-  gulp.watch("./js/**/*.js").on("change", browserSync.reload);
-});
+function vendor() {
+  // Bootstrap
+  var bootstrap = gulp
+    .src("./node_modules/bootstrap/dist/**/*")
+    .pipe(gulp.dest("./dist/vendor/bootstrap"));
+  // Font Awesome CSS
+  var fontAwesomeCSS = gulp
+    .src("./node_modules/@fortawesome/fontawesome-free/css/**/*")
+    .pipe(gulp.dest("./dist/vendor/fontawesome-free/css"));
+  // Font Awesome Webfonts
+  var fontAwesomeWebfonts = gulp
+    .src("./node_modules/@fortawesome/fontawesome-free/webfonts/**/*")
+    .pipe(gulp.dest("./dist/vendor/fontawesome-free/webfonts"));
+  // jQuery
+  var jquery = gulp
+    .src([
+      "./node_modules/jquery/dist/*",
+      "!./node_modules/jquery/dist/core.js",
+    ])
+    .pipe(gulp.dest("./dist/vendor/jquery"));
+
+  return merge(bootstrap, fontAwesomeCSS, fontAwesomeWebfonts, jquery);
+}
+
+function watchFiles() {
+  gulp.watch("./src/scss/**/*", gulp.series(css));
+  gulp.watch("./src/**/*.html", gulp.series(html, browserSyncReload));
+}
+
+const build = gulp.series(clean, vendor, gulp.parallel(css, html));
+const watch = gulp.series(build, browserSyncInit, watchFiles);
+
+exports.build = build;
+exports.watch = watch;
