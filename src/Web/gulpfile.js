@@ -27,7 +27,7 @@ function browserSyncReload(done) {
 }
 
 function clean() {
-  return del(["dist/*.html", "dist/css", "dist/vendor"]);
+  return del(["dist/*.html", "dist/css", "dist/vendor", "dist/img"]);
 }
 
 function html() {
@@ -40,6 +40,10 @@ function html() {
       })
     )
     .pipe(gulp.dest(htmlOutputPath));
+}
+
+function images() {
+  return gulp.src("./src/img/*").pipe(gulp.dest("./dist/img"));
 }
 
 function css() {
@@ -87,7 +91,7 @@ function watchFiles() {
   gulp.watch("./src/**/*.html", gulp.series(html, browserSyncReload));
 }
 
-const build = gulp.series(clean, vendor, gulp.parallel(css, html));
+const build = gulp.series(clean, gulp.parallel(vendor, css, html, images));
 const watch = gulp.series(build, browserSyncInit, watchFiles);
 
 exports.build = build;
