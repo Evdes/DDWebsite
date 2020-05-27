@@ -66,13 +66,13 @@ function css() {
 
 function js(){
   return gulp
-		.src("./src/js/**/*.js")
+		.src(["./src/js/**/*.js", "!./src/js/cookies.js"])
 		.pipe(
 			minify({
 				ext: {
 					min: ".min.js",
 				},
-				noSource: true
+        noSource: true
 			})
 		)
 		.pipe(gulp.dest(jsOutputPath));
