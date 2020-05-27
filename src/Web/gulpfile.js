@@ -4,8 +4,10 @@ const fileinclude = require("gulp-file-include");
 const gulp = require("gulp");
 const del = require("del");
 const sass = require("gulp-sass");
+const minify = require("gulp-minify");
 const htmlOutputPath = "./dist/";
 const cssOutputPath = "./dist/css";
+const jsOutputPath = "./dist/js";
 const rename = require("gulp-rename");
 const path = require("path");
 const browserSync = require("browser-sync").create();
@@ -27,7 +29,7 @@ function browserSyncReload(done) {
 }
 
 function clean() {
-  return del(["dist/*.html", "dist/css", "dist/vendor", "dist/img"]);
+  return del(["dist/*.html", "dist/css", "dist/vendor", "dist/img", "dist/js"]);
 }
 
 function html() {
@@ -62,6 +64,20 @@ function css() {
     .pipe(browserSync.stream());
 }
 
+function js(){
+  return gulp
+		.src("./src/js/**/*.js")
+		.pipe(
+			minify({
+				ext: {
+					min: ".min.js",
+				},
+				noSource: true
+			})
+		)
+		.pipe(gulp.dest(jsOutputPath));
+}
+
 function vendor() {
   // Bootstrap
   var bootstrap = gulp
@@ -89,9 +105,10 @@ function vendor() {
 function watchFiles() {
   gulp.watch("./src/scss/**/*", gulp.series(css));
   gulp.watch("./src/**/*.html", gulp.series(html, browserSyncReload));
+  gulp.watch("./src/js/**/*", gulp.series(js, browserSyncReload));
 }
 
-const build = gulp.series(clean, gulp.parallel(vendor, css, html, images));
+const build = gulp.series(clean, gulp.parallel(vendor, css, html, images, js));
 const watch = gulp.series(build, browserSyncInit, watchFiles);
 
 exports.build = build;

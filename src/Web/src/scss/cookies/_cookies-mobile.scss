@@ -1,0 +1,29 @@
+.cookie-banner {
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0.8rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333333;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+    color: #e7c840;
+    h4{
+      width: 100%;
+    }
+    p{
+      color: white;
+      font-size: 0.8rem;
+      width: 100%
+    }
+    button{
+      margin-left: auto;
+      background-color: #e7c840;
+      border-radius: 0.8rem;
+      border: 0;
+      padding: 0.3rem 0.8rem;
+    }
+  }
